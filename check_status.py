@@ -2,18 +2,17 @@ import os, requests
 from datetime import datetime
 from pathlib import Path
 
-SERVER = os.environ["SERVER_ADDRESS"]
+SERVER = "weasel.aternos.host:31247"
 WEBHOOK = os.environ["WEBHOOK_URL"]
 STATUS_FILE = Path("status.txt")
 
 def check():
     try:
-        host, port = SERVER.split(":")
-        url = f"https://api.mcstatus.io/v2/status/java/{host}:{port}"
+        url = f"https://api.mcstatus.io/v2/status/java/{SERVER}"
         print(f"Checking {url}")
         r = requests.get(url, timeout=15)
         data = r.json()
-        print(f"Response: online={data.get('online')}")
+        print(f"Full response: online={data.get('online')}, players={data.get('players')}")
         if data.get("online"):
             players = data.get("players", {})
             return True, players.get("online", 0), players.get("max", 0)
