@@ -1,3 +1,4 @@
+# Minecraft server status checker
 name: MC Status Check
 on:
   schedule:
