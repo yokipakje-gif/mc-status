@@ -17,6 +17,7 @@ jobs:
           WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
           SERVER_ADDRESS: ${{ secrets.MC_SERVER }}
       - run: |
+          git pull --rebase
           git config user.name "bot"
           git config user.email "bot@bot.com"
           git add status.txt
