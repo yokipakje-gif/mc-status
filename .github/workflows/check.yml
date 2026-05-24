@@ -15,11 +15,10 @@ jobs:
       - run: python check_status.py
         env:
           WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
-          SERVER_ADDRESS: ${{ secrets.MC_SERVER }}
       - run: |
-          git pull --rebase
           git config user.name "bot"
           git config user.email "bot@bot.com"
+          git pull --rebase --autostash
           git add status.txt
           git diff --cached --quiet || git commit -m "update"
           git push
