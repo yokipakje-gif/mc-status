@@ -2,7 +2,7 @@ import os, requests
 from datetime import datetime
 from pathlib import Path
 
-SERVER = "weasel.aternos.host:31247"
+SERVER = "Yokipakje.aternos.me:31247"
 WEBHOOK = os.environ["WEBHOOK_URL"]
 STATUS_FILE = Path("status.txt")
 
