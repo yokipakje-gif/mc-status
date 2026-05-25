@@ -1,4 +1,4 @@
-import os, requests
+import os, requests, json
 from datetime import datetime
 from pathlib import Path
 
@@ -24,19 +24,37 @@ def check():
 def send(online, spelers=0, mx=0):
     if online:
         embed = {"title":"🟢 Server is ONLINE!","description":f"**{SERVER}**\nKom joinen!","color":0x2ECC71,"fields":[{"name":"🎮 Spelers","value":f"{spelers}/{mx}","inline":True}],"timestamp":datetime.utcnow().isoformat()}
+        content = "<@&1508480301289181235> De server is online!"
     else:
         embed = {"title":"🔴 Server is OFFLINE","description":f"**{SERVER}**\nDe server is gestopt.","color":0xE74C3C,"timestamp":datetime.utcnow().isoformat()}
-    r = requests.post(WEBHOOK, json={"username":"Minecraft Status","embeds":[embed]})
+        content = ""
+    r = requests.post(WEBHOOK, json={"username":"Minecraft Status","content":content,"embeds":[embed]})
     print(f"Discord melding verstuurd! Status: {r.status_code}")
 
-prev = STATUS_FILE.read_text().strip() if STATUS_FILE.exists() else "offline"
-print(f"Vorige status: {prev}")
+def load_state():
+    try:
+        data = json.loads(STATUS_FILE.read_text())
+        return data.get("status", "offline"), data.get("offline_count", 0)
+    except:
+        return "offline", 0
+
+def save_state(status, offline_count):
+    STATUS_FILE.write_text(json.dumps({"status": status, "offline_count": offline_count}))
+
+prev_status, offline_count = load_state()
+print(f"Vorige status: {prev_status}, offline teller: {offline_count}")
+
 online, sp, mx = check()
-cur = "online" if online else "offline"
-print(f"Huidige status: {cur}")
-if cur != prev:
-    print("Status veranderd! Melding versturen...")
-    send(online, sp, mx)
+
+if online:
+    offline_count = 0
+    if prev_status == "offline":
+        print("Server is ONLINE gekomen! Melding versturen...")
+        send(True, sp, mx)
+    else:
+        print("Server is nog steeds online.")
+    save_state("online", 0)
 else:
-    print("Geen verandering, geen melding.")
-STATUS_FILE.write_text(cur)
+    if prev_status == "online":
+        offline_count += 1
+        print(f"Server lijkt offline ({offline_count}/
