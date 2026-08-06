@@ -3,6 +3,7 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 {"status": "online", "offline_count": 1}
 =======
 {"status": "online", "offline_count": 0}
@@ -15,6 +16,9 @@
 >>>>>>> Stashed changes
 =======
 {"status": "online", "offline_count": 1}
+>>>>>>> Stashed changes
+=======
+{"status": "online", "offline_count": 0}
 >>>>>>> Stashed changes
 =======
 {"status": "online", "offline_count": 0}
