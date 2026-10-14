@@ -1,1 +1,1 @@
-{"status": "online", "offline_count": 1}
+{"status": "online", "offline_count": 2}
